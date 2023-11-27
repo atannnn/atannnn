@@ -1,0 +1,219 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+void clearScreen() {
+    for (int i = 0; i < 25; ++i) {
+        cout << endl;
+    }
+}
+
+struct TeacherInfo {
+    string name;
+    string Institute;
+    string Faculty;
+    int RoomNo;
+    string Schedule[5]; 
+};
+
+unordered_map<string, TeacherInfo> TeachersMap = {
+    {"Benzur", {"Benzur Cagalitan", "ICS", "ICS Building", 105, {
+        "Monday:    1A,  Room 105, Building A",
+        "Tuesday:   1B,  Room 106, Building A",
+        "Wednesday: 1C,  Room 107, Building A",
+        "Thursday:  1D,  Room 108, Building A",
+        "Friday:    1E,  Room 109, Building A"
+    }}},
+    {"Cagalitan", {"John Paul Cagalitan", "IBE",  "IBE Building", 201, {
+        "Monday:    Room 201, Building B",
+        "Tuesday:   Room 202, Building B",
+        "Wednesday: Room 203, Building B",
+        "Thursday:  Room 204, Building B",
+        "Friday:    Room 205, Building B"
+    }}},
+    {"Luat", {"Roovesvelt Luat", "IOE", "IOE Building", 301, {
+        "Monday:    Room 301, Building B",
+        "Tuesday:   Room 302, Building B",
+        "Wednesday: Room 303, Building B",
+        "Thursday:  Room 304, Building B",
+        "Friday:    Room 305, Building B"
+    }}},    
+    {"Almazan", {"Ivy Almazan", "IBE", "IBE Building", 203, {
+        "Monday:    Room 301, Building B",
+        "Tuesday:   Room 302, Building B",
+        "Wednesday: Room 303, Building B",
+        "Thursday:  Room 304, Building B",
+        "Friday:    Room 305, Building B"    
+    }}}
+};
+
+void get_Teacher_info() {
+    string TeacherName;
+    cout << "Enter Teacher's Name: ";
+    cin >> TeacherName;
+    auto it = TeachersMap.find(TeacherName);
+    if (it != TeachersMap.end()) {
+        TeacherInfo Teacher_info = it->second;
+        cout << "---Teacher's Information---" << endl;
+        cout << "  Full Name: " << Teacher_info.name << "       " << endl;
+        cout << "  Institute: " << Teacher_info.Institute << "                  " << endl;
+        cout << "  Faculty:   " << Teacher_info.Faculty << "         " << endl;
+        cout << "  Room:      " << Teacher_info.RoomNo << "                  " << endl;
+        cout << "  Schedule for the week:               " << endl;
+
+        cout << "+----------------------------------------+" << endl;
+        cout << "|  Day  | Section |  Room  |  Building | " << endl;
+        cout << "+----------------------------------------+" << endl;
+        for (const string& day : Teacher_info.Schedule) {
+            cout << "| " << day << "    |" << endl;
+        }
+        cout << "+----------------------------------------+" << endl;
+    } else {
+        cout << "Invalid teacher." << endl;
+    }
+}
+
+
+class Registrar {
+public:
+    Registrar() : clientNumber(1) {}
+
+    int generateClientNumber() {
+        return clientNumber++;
+    }
+
+private:
+    int clientNumber;
+};
+
+void displayCourses(){
+    cout << "Courses: " << endl;
+    cout << " ---------------------------------" << endl;
+    cout << " | Computer Engineering          |" << endl;
+    cout << " | Entrepreneurship              |" << endl;
+    cout << " | Education                     |" << endl;
+    cout << " | Information Technology        |" << endl;
+    cout << " | Bussiness Administration      |" << endl;
+    cout << " ---------------------------------" << endl;
+    
+};
+
+struct StudentInfo {
+    string name;
+    string course;
+    string year;
+    string section; // New field for section
+};
+
+unordered_map<int, StudentInfo> students = {
+    {101, {"John Paul Cagalitan", "BSCPE", "FRESHMEN", "1A"}},
+    {102, {"Edriz Bulagao", "BSED", "FRESHMEN", "1B"}},
+    {103, {"Mark Zander Emperio", "BSCPE", "FRESHMEN", "1C"}},
+    {104, {"Sheica Ochada", "BSIT", "FRESHMEN", "1D"}},
+    {105, {"Wendy Basco", "BSCPE", "SENIOR", "1E"}},
+    {106, {"Christian Tau-toan", "BSIT", "SENIOR", "1A"}},
+    {107, {"Rommel Fajardo", "BSED", "SENIOR", "1B"}},
+    {108, {"Charlie Norcio", "BSAD", "FRESHMEN", "1C"}},
+    {109, {"Giovanni Alvero", "BSIT", "SENIOR", "1D"}},
+    {110, {"Maricar Pedregoza", "BSED", "SENIOR", "1E"}},
+    
+};
+struct Office {
+    string building;
+    string room_number;
+};
+
+// Create a map to store office information
+unordered_map<string, Office> offices = {
+    {"registrar", {"Admin Building", "101"}},
+    {"accounting", {"Accounting Building", "201"}},
+};
+
+void get_student_info() {
+    int student_num;
+    cout << "Enter student number: ";
+    cin >> student_num;
+
+    auto student = students.find(student_num);
+    if (student != students.end()) {
+        cout << "-----------------------------------" << endl;
+        cout << "| Name:   " << student->second.name <<"     |" << endl;
+        cout << "| Course: " << student->second.course <<" " <<"                  |" << endl;
+        cout << "| Year:   " << student->second.year << "                |" << endl;
+        cout << "| Section: " << student->second.section << "                     |" << endl;
+        cout << "-----------------------------------" << endl;
+    } else {
+        cout << "Student not found." << endl;
+    }
+}
+
+
+void get_office_info(Registrar& registrar) {
+    string office;
+    cout << "Enter office (registrar/accounting): ";
+    cin >> office;
+    auto it = offices.find(office);
+    if (it != offices.end()) {
+  Office office_info = it->second;
+  int clientNumber = registrar.generateClientNumber();
+    cout << "------------------------------------" << endl;
+    cout << "|         Office Information        |" << endl;
+    cout << "------------------------------------" << endl;
+    cout << "| Building:      " << office_info.building<<"" << endl;
+    cout << "| Room Number:   " << office_info.room_number << endl;
+    cout << "| Client Number: " << clientNumber << endl;
+    cout << "-----------------------------------" << endl;
+    } else {
+        cout << "Invalid office." <<endl;
+    }
+}
+
+int main() {
+    Registrar registrar;
+    while (true) {
+        cout << "\n\t\t\t\tWELCOME TO OUR"<<endl;
+        cout << "\t\t\t\tINFORMATION SYSTEM" << endl;
+        cout << "=======================================================================" << endl;
+        cout << "\nOptions: "                   << endl;
+        cout << "[1]. Get student information "<< endl;
+        cout << "[2]. Get office information  "<< endl;
+        cout << "[3]. Courses.                " << endl;
+        cout << "[4]. Teacher's Information   " <<endl;
+        cout << "[5]. Quit.                   " << endl;
+          
+        int option;
+        cout << "Enter your choice: ";
+        if (!(cin >> option)) {
+            cout << "Invalid input. Please enter a number." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+}
+        switch (option) {
+            case 1:
+           clearScreen();
+                get_student_info();
+                break;
+            case 2:
+               clearScreen();
+                get_office_info(registrar);
+                break;
+            case 3:
+               clearScreen();
+                displayCourses();
+                break;
+            case 4:
+                clearScreen();
+                get_Teacher_info();
+                break;
+            case 5:    
+                cout << "Thank You For Using Our System!!" << endl;
+                return 0;
+            default:
+                cout << "Invalid option. Please choose 1, 2, 3, 4, or 5" <<endl;
+        }
+        
+    }
+}
+    
